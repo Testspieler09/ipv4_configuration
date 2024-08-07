@@ -420,10 +420,10 @@ function Start-Main {
 
 	$name = Ask-Name
 
-	if ($arguments -contains "-use_gui") {
+	if ($arguments -contains "--use_gui") {
 		# set settings via gui
 		GUI $name
-	} elseif ($arguments -contains "-open_config") {
+	} elseif ($arguments -contains "--open_config") {
 		# Open ncpa.cpl
 		Open-Network-Config $name
 	} else {
