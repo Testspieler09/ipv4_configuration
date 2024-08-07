@@ -8,7 +8,7 @@ A simple IPv4 configuration script for Windows (CLI + GUI).
 > The program was tested on Windows 11.
 
 > [!Note]
-> The provided warnings are just for legal reasons, as configuring your IP settings could create problems.
+> The provided warnings are for legal reasons. Configuring your IP settings improperly can create network issues.
 
 # Features
 
