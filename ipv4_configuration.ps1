@@ -6,6 +6,7 @@ A script to configurate the IPv4 settings on Windows with or without GUI.
 .VERSION
 1.0.0
 #>
+
 param()
 
 function Test-IsAdmin {
@@ -97,7 +98,7 @@ function Apply-IPconfig {
 		return
 	}
 
-	if (!(IsValidIPv4Address $arguments.dns_2)) {
+	if (!(IsValidIPv4Address $arguments.dns_2) -and !(IsValidIPv4Address $arguments.dns_1)) {
 		Set-DnsClientServerAddress -InterfaceAlias $arguments.name -ResetServerAddresses
 		Write-Host "The DNS server addresses are reset now" -f Blue
 	} else {
@@ -402,16 +403,16 @@ function Ask-Name {
 
 function Start-Main {
 	param(
-		[Array]$arguments
+		[string[]]$arguments
 	)
 	if (!(Test-IsAdmin)) {
 		Write-Host ("You need administrative priveleges or priveleges " +
 					"to configure the network settings to run this script.") -f Red
-		exit
+		return
 	}
 	Write-Host "`nUse " -NoNewline
-	Write-Host "-use_gui" -f Blue -NoNewline
-	Write-Host " or " -NoNewline; Write-Host "-open_config" -f Blue -NoNewline
+	Write-Host "--use_gui" -f Blue -NoNewline
+	Write-Host " or " -NoNewline; Write-Host "--open_config" -f Blue -NoNewline
 	Write-Host " to set them with a GUI or in the network settings.`n" -NoNewline
 
 	Get-NetAdapter
@@ -420,10 +421,10 @@ function Start-Main {
 
 	$name = Ask-Name
 
-	if ($arguments -contains "--use_gui") {
+	if ($arguments -match "--use_gui") {
 		# set settings via gui
 		GUI $name
-	} elseif ($arguments -contains "--open_config") {
+	} elseif ($arguments -match "--open_config") {
 		# Open ncpa.cpl
 		Open-Network-Config $name
 	} else {
